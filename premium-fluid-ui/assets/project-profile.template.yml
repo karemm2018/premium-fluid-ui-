@@ -1,0 +1,40 @@
+# Project-specific intent is configurable; correcting a VERIFIED contract mismatch is mandatory. Do NOT copy design tokens blindly across brands.
+project:
+  name: ""
+  profile: marketplace # or education, dashboard, marketing
+  direction: rtl # or ltr
+  existing_design_tokens: true
+user_controls:
+  colors_and_branding: true
+  editorial_look_and_feel: true
+skill_controls:
+  fluid_layout: true
+  responsive_spacing: true
+  typography_sizing: true
+  browser_auditing: true
+design_contract:
+  desktop_reference_css_viewport: [1536, 864]
+  desktop_start_css_px: 1024
+  desktop_root_baseline_css_px: 16
+  desktop_scale_min: 0.65
+  desktop_scale_max: 1.25
+  framed_inner_content_side_gutter_target_percent: 13.5
+  framed_inner_content_side_gutter_range_percent: [12, 14]
+  preserve_approved_desktop_columns: true
+  preserve_approved_desktop_nav_and_actions: true
+  correct_verified_p2_typography_spacing: true
+  exception_policy: document_intent_and_evidence
+acceptance:
+  no_unintended_page_horizontal_overflow: true
+  maintain_functionality: true
+  preserve_user_text_resizing: true
+  manually_verify_browser_zoom: true
+
+typography:
+  default_preset: personal-luxury # portable profile; applies to visual design tasks
+  tokens_file: assets/luxury-fluid-typography.css
+  adoption_mode: map-existing-tokens # don't override existing CSS wholesale
+  preserve_approved_existing_for_repair_only: true # preserve identity, NOT a waiver for measured size/weight deviations
+  correct_verified_size_weight_spacing_mismatches: true
+  allow_accessibility_exceptions: true
+  arabic_body_review_required: true

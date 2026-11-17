@@ -1,0 +1,187 @@
+/* Premium Fluid UI v1.9.2 — reference snippet, opt-in per verified design contract.
+ * Do NOT paste the whole file globally without mapping existing tokens/sections.
+ * Default desktop reference: 1536×864 CSS pixels / 16px root. */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+  /* Do not hide overflow globally: audits must expose the actual offending component. */
+  /* Prevent 17px Windows scrollbar jump when opening modals/drawers */
+  scrollbar-gutter: stable both-edges;
+}
+
+body {
+  margin: 0;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  /* Fix overflow at its source; no global clipping mask. */
+}
+
+/* 1. TIER 1: Proportional 2D Desktop Scaling for Smaller PC Screens (1024x600 .. 1600x900)
+ * Calibrated 2D root-size scale: ~71.6% (11.46px) at both 1024x600 and 1024x768
+ * so the desktop design never looks huge or bloated on small laptops/monitors.
+ */
+/* Anchored to 1536x864 (16.5" 4K at 250% scale / 15.6" FHD at 125% scale) as the 100% (16px) baseline:
+ * - 1920x1080 (200% 4K / 24" FHD) -> 19.4px (~121% scale: scales UP so it never looks tiny)
+ * - 1536x864  (250% 4K Reference) -> 16.0px (100.0% exact baseline!)
+ * - 1440x900                      -> 15.14px (94.65% scale)
+ * - 1366x768                      -> 14.49px (90.55% scale)
+ * - 1280x720                      -> 13.73px (85.80% scale)
+ * - 1024x768                      -> 11.46px (71.64% scale)
+ * - 1024x600                      -> 11.46px (71.64% scale)
+ */
+@media (min-width: 64rem) {
+  html {
+    font-size: clamp(
+      65%,
+      min(calc(0.15rem + 0.885vw), calc(0.15rem + 1.574dvh)),
+      125%
+    );
+  }
+}
+
+
+/* 1b. Mandatory Desktop Side-Whitespace Preservation (>= 1024px):
+ * Both-edge stable scrollbar gutters keep left/right framing symmetric (classic 15px scrollbars).
+ * Preserves ~13%–14% empty space on BOTH left and right sides on every PC screen
+ * (1024x600, 1280x720, 1366x768, 1440x900, 1920x1080) matching the FBS Luxury Layout.
+ * Outer <section> backgrounds can span 100%, while inner content containers stay framed at ~73vw.
+ * The 78rem optional width cap is NOT a default because it would violate 13.5% margins on 4K screens.
+ */
+@media (min-width: 64rem) {
+  :root {
+    --pf-side-gutter: 13.5vw;
+    --pf-framed-width: 73vw;
+  }
+  .pf-framed-container,
+  .page-shell {
+    inline-size: var(--pf-framed-width) !important;
+    max-inline-size: 100% !important;
+    margin-inline: auto !important;
+  }
+}
+
+/* 2. Low-Res Readability Floor on 1024x600 / 1366x768:
+ * While layout containers, cards, and headings shrink to ~71.6% on 1024px screens,
+ * protect small body and metadata text from dropping below crisp 1dpr legibility (12px / 11px).
+ */
+@media (min-width: 64rem) and (max-width: 86rem) {
+  .pf-type-body {
+    font-size: max(var(--pf-type-body, 0.9375rem), 12px);
+  }
+  .pf-type-caption, .pf-type-micro {
+    font-size: max(var(--pf-type-caption, 0.8125rem), 11px);
+  }
+}
+
+
+/* 2b. Font-Weight & Dark-Background Halation Guard:
+ * Prevent faux-bold disconnection in Arabic, soften 800/900 weights on small/low-res screens,
+ * and prevent thin 100-300 weights from disappearing on 1024x600 / 1366x768 displays.
+ */
+/* Opt-in only: project typography should map the same behavior through its theme. */
+.pf-balanced-typography {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis-weight: none;
+}
+@media (max-width: 39.99rem), (min-width: 64rem) and (max-width: 86rem), (max-resolution: 1.25dppx) {
+  .pf-weight-adaptive-heading {
+    font-weight: 600;
+  }
+  .pf-weight-adaptive-caption {
+    font-weight: 500;
+  }
+}
+
+/* 3. Ultra-Wide & 2K/4K Protection (>= 1920px):
+ * Prevent header/hero elements from drifting to extreme screen edges on 2560px/3440px monitors.
+ */
+.pf-container-ultrawide-safe {
+  inline-size: min(100% - 2 * var(--page-gutter, 2rem), var(--content-max, 90rem));
+  margin-inline: auto;
+}
+
+/* 4. Equal-Height Card Row & Dynamic Data Stability (Auctions / Prices / Timers):
+ * Keep sibling cards the exact same height even when titles wrap to 2 lines,
+ * and lock numeral widths so live countdown timers and big prices never jitter or wrap.
+ */
+.pf-card-equal {
+  display: flex;
+  flex-direction: column;
+  block-size: 100%;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+.pf-card-equal__footer,
+.pf-card-equal__cta {
+  margin-block-start: auto;
+}
+.pf-tabular-nums,
+[data-pf-price],
+[data-pf-timer] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 5. Media & SVG Proportional Guard:
+ * Prevent inline SVGs with hardcoded px attributes or un-aspect-ratioed images from staying huge.
+ */
+.pf-responsive-media {
+  max-inline-size: 100%;
+  block-size: auto;
+  display: block;
+}
+.pf-scalable-icon {
+  flex-shrink: 0;
+  max-inline-size: 100%;
+}
+
+/* 6. TIER 2: Structural Reflow below 1024px (Tablet Portrait & Mobile).
+ * Apply these class hooks ONLY to reviewed components. */
+@media (max-width: 63.99rem) {
+  html {
+    font-size: 100%;
+  }
+  .pf-desktop-only-actions {
+    display: none !important;
+  }
+  .pf-desktop-floating-card {
+    position: static !important;
+    inline-size: 100% !important;
+    max-inline-size: 100% !important;
+    inset: auto !important;
+    transform: none !important;
+    margin-block-start: 1rem;
+  }
+}
+
+/* Mobile Portrait (< 640px): opt-in single-column CONTENT cards & vertical steppers.
+ * Compact stats, tab pairs and icon grids must not use the .pf-responsive-grid class. */
+@media (max-width: 39.99rem) {
+  .pf-responsive-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .pf-responsive-stepper {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+}
+
+/* Mobile Landscape (< 960px wide AND <= 500px tall): compact 2-column split */
+@media (orientation: landscape) and (max-width: 59.99rem) and (max-height: 31.25rem) {
+  .pf-hero-landscape-split {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr) !important;
+    align-items: center !important;
+    gap: 1rem !important;
+  }
+  .pf-hero-landscape-split img,
+  .pf-hero-landscape-split video {
+    max-block-size: 48dvh !important;
+    object-fit: contain !important;
+  }
+}
